@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Lab2</string>
+    <string name="app_name">Lab3</string>
     <string name="hello_message">Privet mir</string>
     <string name="ButtonText"> Ya knopka</string>
     <string name="textview1">Posmotry na moy GUI</string>
     <string name="button1">Zhmi suda</string>
     <string name="checkbox1">Cdelay otmetku!</string>
-    <string name="switch1">Switch on / off</string>
+    <string name="switch1">Vklyuchit\' / off</string>
     <string name="hint1">Pishi sdes</string>
     <string name="toast_msg">Zdes\' bol\'she informatsii</string>
+    <string name="passwd">Vvedite cvoj parol:</string>
+    <string name="hint2">Ukazhite email zdes</string>
+    <string name="tv_enter_your_email">Vvedite svoj email adres:</string>
+    <string name="btn_login">vhod</string>
+    <string name="tv_your_profile">Vash profil\'</string>
+    <string name="tv_your_name">Vashe imya</string>
+    <string name="et_enter_your_name">Vvedite vashe imia</string>
+    <string name="tv_your_email">Vash email:</string>
+    <string name="et_enter_your_email">Vvedite vash email</string>
+    <string name="tv_your_picture">Vashsa fotka:</string>
+    <string name="tv_click_the_button_picture">Nazhmite na knopku vyshe chtoby sdelat\' fotku</string>
 </resources>

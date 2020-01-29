@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lab2</string>
+    <string name="app_name">Lab3</string>
     <string name="hello_message">Hello world!</string>
     <string name="ButtonText"> I\'am a button</string>
     <string name="textview1">Look at my GUI</string>
@@ -8,4 +8,15 @@
     <string name="switch1">Switch on / off</string>
     <string name="hint1">Type here</string>
     <string name="toast_msg">Here is more information</string>
+    <string name="passwd">Type your password:</string>
+    <string name="hint2">Type email here</string>
+    <string name="tv_enter_your_email">Enter your email address:</string>
+    <string name="btn_login">login</string>
+    <string name="tv_your_profile">Your profile</string>
+    <string name="tv_your_name">Your name</string>
+    <string name="et_enter_your_name">Enter your name</string>
+    <string name="tv_your_email">Your email:</string>
+    <string name="et_enter_your_email">Enter your email</string>
+    <string name="tv_your_picture">Your picture:</string>
+    <string name="tv_click_the_button_picture">Click the button above to take a picture</string>
 </resources>

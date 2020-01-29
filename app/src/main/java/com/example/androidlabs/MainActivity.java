@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_grid);
+        setContentView(R.layout.activity_main_linear);
 
         // now screen is loaded, use findViewById()to get lod Java objects
         EditText theEdit = findViewById(R.id.editText);
