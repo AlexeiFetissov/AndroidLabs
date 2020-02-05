@@ -20,7 +20,7 @@ public class FirstActivity extends AppCompatActivity {
         // load shared prefs
         SharedPreferences prefs=getSharedPreferences("FileName", MODE_PRIVATE);
         //load user's email under reserved key (resevation name)
-        emailAdd = prefs.getString("userEmailAddress", "");
+        emailAdd = prefs.getString("userEmailAddress", "ggggg");
 
         EditText inputEmailAddr = findViewById(R.id.et_inp_email);
         inputEmailAddr.setText(emailAdd);
