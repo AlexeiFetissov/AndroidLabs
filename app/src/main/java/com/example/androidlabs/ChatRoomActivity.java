@@ -36,7 +36,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             View message_view = getLayoutInflater().inflate(R.layout.view_alert, null);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Do you want to delete this?\nThe selected row is: " )
+            builder.setTitle("Do you want to delete this?" )
 
                     .setMessage("The slected row is: " + (pos+1) + "\nThe database id: " + id)
                     .setView(message_view)
@@ -45,7 +45,6 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                         public void onClick(DialogInterface dialog, int id) {
                             // What to do on delete and update
-                           // dialog.dismiss();
                             list.remove(pos);
                             myAdapter.notifyDataSetChanged(); // update
                         }
@@ -120,18 +119,12 @@ public class ChatRoomActivity extends AppCompatActivity {
             int layout = 0;
             newView = null;
             if (msg.isSend) {layout = R.layout.send_row_layout;}
-            else {
-                if (msg.isReceived)
+            else if (msg.isReceived)
                     layout = R.layout.receive_row_layout;
-            }
-            if (newView == null){
+
+            if (newView == null)
                 newView = getLayoutInflater().inflate(layout, parent, false);
 
-            }
-            else
-            {
-
-            }
             TextView textView = newView.findViewById(R.id.message);
             textView.setText(msg.message);
 
