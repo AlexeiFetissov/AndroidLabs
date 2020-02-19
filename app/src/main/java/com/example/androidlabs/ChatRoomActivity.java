@@ -3,28 +3,69 @@ package com.example.androidlabs;
         import androidx.appcompat.app.AlertDialog;
         import androidx.appcompat.app.AppCompatActivity;
 
+        import android.content.ContentValues;
         import android.content.DialogInterface;
+        import android.database.sqlite.SQLiteDatabase;
         import android.os.Bundle;
+        import android.util.Log;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.BaseAdapter;
         import android.widget.Button;
-        import android.widget.EditText;
         import android.widget.ListView;
         import android.widget.TextView;
         import java.lang.String;
         import java.util.ArrayList;
+        import java.util.Arrays;
+
+        import android.database.Cursor;
 
 public class ChatRoomActivity extends AppCompatActivity {
 
     // messages
     ArrayList<Message> list = new ArrayList<>(); // private  elements
     BaseAdapter myAdapter;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
+
+        //get a database connection:
+        MyOpener dbOpener = new MyOpener(this);
+        db = dbOpener.getWritableDatabase();
+
+        //loadDataFromDatabase();
+        // We want to get all of the columns
+        String [] columns = {
+                MyOpener.COL_ID, MyOpener.COL_MESSAGE, MyOpener.COL_SENT, MyOpener.COL_RECEIVED};
+        //query all the results from the database:
+        Cursor results = db.query(
+                false, MyOpener.TABLE_NAME, columns,
+                null, null, null, null, null, null);
+
+        //Now the results object has rows of results that match the query.
+        //find the column indices:
+        int msgColumnIndex = results.getColumnIndex(MyOpener.COL_MESSAGE);
+        int sentColIndex = results.getColumnIndex(MyOpener.COL_SENT);
+        int receivedColIndex = results.getColumnIndex(MyOpener.COL_RECEIVED);
+        int idColIndex = results.getColumnIndex(MyOpener.COL_ID);
+
+        while(results.moveToNext())
+        {
+            String msg = results.getString(msgColumnIndex);
+            String msgSent = results.getString(sentColIndex);
+            String msgReceived = results.getString(receivedColIndex);
+            long id = results.getLong(idColIndex);
+
+            //add the new Contact to the array list:
+            if (msgSent.equals("1"))
+                list.add(new Message(id, msg, true, false));
+            else
+                list.add(new Message(id, msg, false, true));
+        }
+
 
         // get reference to ListView
         ListView theList = findViewById(R.id.lv_chat_room);
@@ -43,8 +84,9 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface dialog, int id) {
+                        public void onClick(DialogInterface dialog, int di) {
                             // What to do on delete and update
+                            deleteContact(id);
                             list.remove(pos);
                             myAdapter.notifyDataSetChanged(); // update
                         }
@@ -67,8 +109,17 @@ public class ChatRoomActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.et_chat_text);
         Button sendButton = findViewById(R.id.btn_send);
         sendButton.setOnClickListener( click -> {
+            String mess2db = textView.getText().toString();
+            String isSent = "1";
+            String isReceived = "0";
+            ContentValues newRowValues = new ContentValues();
+            newRowValues.put(MyOpener.COL_MESSAGE, mess2db);
+            newRowValues.put(MyOpener.COL_SENT, isSent);
+            newRowValues.put(MyOpener.COL_RECEIVED, isReceived);
+            long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+
             Message message =
-                    new Message(textView.getText().toString(), true, false);
+                    new Message(newId, mess2db, true, false);
             list.add(message);
             myAdapter.notifyDataSetChanged(); // update
             textView.setText("");
@@ -76,23 +127,99 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         Button receiveButton = findViewById(R.id.btn_receive);
         receiveButton.setOnClickListener(click -> {
+            String mess2db = textView.getText().toString();
+            String isSent = "0";
+            String isReceived = "1";
+            ContentValues newRowValues = new ContentValues();
+            newRowValues.put(MyOpener.COL_MESSAGE, mess2db);
+            newRowValues.put(MyOpener.COL_SENT, isSent);
+            newRowValues.put(MyOpener.COL_RECEIVED, isReceived);
+            long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+
             Message message =
-                    new Message(textView.getText().toString(), false, true);
+                    new Message(newId, mess2db, false, true);
             list.add(message);
             myAdapter.notifyDataSetChanged(); // update
             textView.setText("");
         });
+
+        printCursor(results);
+    }
+
+    public void printCursor(Cursor c) {
+
+        int v = MyOpener.VERSION_NUM;
+
+        Log.i("Database Version #: ", String.valueOf(v));
+        Log.i("Numb of clmn in curs: ", String.valueOf(c.getColumnCount()));
+        Log.i("Columns names in curs: ", Arrays.toString(c.getColumnNames()));
+        Log.i("Numb results in curs: ", String.valueOf(c.getCount()));
+
+        c.moveToFirst();
+
+        do{
+            String data = c.getString(c.getColumnIndex("MESSAGE"));
+            Log.i("Row result: ", data);
+            c.moveToNext();
+        }while (!c.isAfterLast());
+    }
+
+    private void loadDataFromDatabase()
+    {
+        //get a database connection:
+        //MyOpener dbOpener = new MyOpener(this);
+        //db = dbOpener.getWritableDatabase();
+
+        // We want to get all of the columns
+        String [] columns = {
+                MyOpener.COL_ID, MyOpener.COL_MESSAGE, MyOpener.COL_SENT, MyOpener.COL_RECEIVED};
+        //query all the results from the database:
+        Cursor results = db.query(
+                false, MyOpener.TABLE_NAME, columns,
+                null, null, null, null, null, null);
+
+        //Now the results object has rows of results that match the query.
+        //find the column indices:
+        int msgColumnIndex = results.getColumnIndex(MyOpener.COL_MESSAGE);
+        int sentColIndex = results.getColumnIndex(MyOpener.COL_SENT);
+        int receivedColIndex = results.getColumnIndex(MyOpener.COL_RECEIVED);
+        int idColIndex = results.getColumnIndex(MyOpener.COL_ID);
+
+        while(results.moveToNext())
+        {
+            String msg = results.getString(msgColumnIndex);
+            String msgSent = results.getString(sentColIndex);
+            String msgReceived = results.getString(receivedColIndex);
+            long id = results.getLong(idColIndex);
+
+            //add the new Contact to the array list:
+            if (msgSent.equals("1"))
+                list.add(new Message(id, msg, true, false));
+                else
+                list.add(new Message(id, msg, false, true));
+        }
+        //At this point, the contactsList array has loaded every row from the cursor.
+    }
+
+    protected void deleteContact(long index)
+    {
+        db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "= ?", new String[] {Long.toString(index)});
     }
 
     public class Message {
+        long id;
         public String message;
-        public boolean isSend;
+        public boolean isSent;
         public boolean isReceived;
 
-        public Message(String message, boolean isSend, boolean isReceived){
+        public Message(long i, String message, boolean isSent, boolean isReceived){  // long i,
+            this.id = i;
             this.message = message;
-            this.isSend = isSend;
+            this.isSent = isSent;
             this.isReceived = isReceived;
+        }
+        public long getId() {
+            return id;
         }
     }
 
@@ -110,7 +237,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         @Override
         public long getItemId(int position) {
-            return (long)position; // normally returns database ID; for now it is (long)position
+            return list.get(position).getId(); // normally returns database ID; for now it is (long)position
         }
 
         @Override
@@ -118,7 +245,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             Message msg = (Message) getItem(position);
             int layout = 0;
             newView = null;
-            if (msg.isSend) {layout = R.layout.send_row_layout;}
+            if (msg.isSent) {layout = R.layout.send_row_layout;}
             else if (msg.isReceived)
                     layout = R.layout.receive_row_layout;
 
