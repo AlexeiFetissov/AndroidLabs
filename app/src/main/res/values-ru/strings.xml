@@ -24,4 +24,9 @@
     <string name="btn_send">Poslat\'</string>
     <string name="et_type_here">Pechataj zdes\'</string>
     <string name="btn_receive">Poluchit\'</string>
+    <string name="go_to_weather_forcast">Go to Weather Forcast</string>
+    <string name="value">horoshaja pogoda</string>
+    <string name="min">min segodnia</string>
+    <string name="max">max segodnia</string>
+    <string name="uv_rating">uv segodnia</string>
 </resources>

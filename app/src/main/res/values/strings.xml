@@ -23,4 +23,9 @@
     <string name="btn_send">Send</string>
     <string name="et_type_here">Type here</string>
     <string name="btn_receive">Receive</string>
+    <string name="go_to_weather_forcast">Go to Weather Forcast</string>
+    <string name="value">good weather</string>
+    <string name="min">min today</string>
+    <string name="max">max today</string>
+    <string name="uv_rating">uv today</string>
 </resources>

@@ -84,7 +84,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface dialog, int di) {
+                        public void onClick(DialogInterface dialogInf, int dlg) {
                             // What to do on delete and update
                             deleteContact(id);
                             list.remove(pos);
@@ -95,9 +95,9 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface dialog, int id) {
+                        public void onClick(DialogInterface dialogInf, int dlg) {
                             // What to do on "No"
-                            dialog.dismiss();
+                            dialogInf.dismiss();
                         }
 
                     }).setView(message_view);
@@ -164,42 +164,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         }while (!c.isAfterLast());
     }
 
-    private void loadDataFromDatabase()
-    {
-        //get a database connection:
-        //MyOpener dbOpener = new MyOpener(this);
-        //db = dbOpener.getWritableDatabase();
-
-        // We want to get all of the columns
-        String [] columns = {
-                MyOpener.COL_ID, MyOpener.COL_MESSAGE, MyOpener.COL_SENT, MyOpener.COL_RECEIVED};
-        //query all the results from the database:
-        Cursor results = db.query(
-                false, MyOpener.TABLE_NAME, columns,
-                null, null, null, null, null, null);
-
-        //Now the results object has rows of results that match the query.
-        //find the column indices:
-        int msgColumnIndex = results.getColumnIndex(MyOpener.COL_MESSAGE);
-        int sentColIndex = results.getColumnIndex(MyOpener.COL_SENT);
-        int receivedColIndex = results.getColumnIndex(MyOpener.COL_RECEIVED);
-        int idColIndex = results.getColumnIndex(MyOpener.COL_ID);
-
-        while(results.moveToNext())
-        {
-            String msg = results.getString(msgColumnIndex);
-            String msgSent = results.getString(sentColIndex);
-            String msgReceived = results.getString(receivedColIndex);
-            long id = results.getLong(idColIndex);
-
-            //add the new Contact to the array list:
-            if (msgSent.equals("1"))
-                list.add(new Message(id, msg, true, false));
-                else
-                list.add(new Message(id, msg, false, true));
-        }
-        //At this point, the contactsList array has loaded every row from the cursor.
-    }
 
     protected void deleteContact(long index)
     {
@@ -222,7 +186,6 @@ public class ChatRoomActivity extends AppCompatActivity {
             return id;
         }
     }
-
 
     private class MyListAdapter extends BaseAdapter {
         @Override

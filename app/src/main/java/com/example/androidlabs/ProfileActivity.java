@@ -48,6 +48,15 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(goToPage3);
             });
         }
+
+        chatButton = findViewById(R.id.btn_go_to_weather_forcast);
+        if (chatButton != null){
+            chatButton.setOnClickListener( v -> {
+                Intent goToPage4 = new Intent(ProfileActivity.this,
+                        WeatherForcast.class);
+                startActivity(goToPage4);
+            });
+        }
     }
 
     @Override
